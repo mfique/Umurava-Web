@@ -1,7 +1,9 @@
+import Navbar from "@/components/landing/shared/Navbar";
+
 export default function Home() {
   return (
     <div>
-      <h1>hello world</h1>
+      <Navbar />
     </div>
-  )
+  );
 }
