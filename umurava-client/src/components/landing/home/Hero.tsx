@@ -19,7 +19,7 @@ export default function Hero() {
         </p>
         <Link
           href={""}
-          className="px-3 py-2 mt-3 md:py-4 w-[150px] text-white bg-blue-light rounded-md font-semibold text-center"
+          className="px-3 py-2 md:p-3 mt-3 w-[150px] text-white bg-blue-light hover:bg-blue-dark duration-500 rounded-md font-semibold text-center"
         >
           Get Started
         </Link>

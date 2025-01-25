@@ -27,7 +27,7 @@ export default function Navbar() {
 
   return (
     <div>
-      <div className="flex fixed w-screen left-0 top-0 bg-white/50 backdrop-blur-lg justify-between items-center pr-6">
+      <div className="lg:px-16 flex fixed w-screen left-0 top-0 bg-white/50 backdrop-blur-lg justify-between items-center pr-6">
         <div>
           <Image src={logo2} alt="Umurava logo" height={90} />
         </div>
@@ -56,7 +56,7 @@ export default function Navbar() {
         <div className="hidden lg:block">
           <Link
             href={""}
-            className="bg-blue-dark px-2 py-3 rounded-md text-white"
+            className="bg-blue-dark hover:bg-blue-light duration-500 px-2 py-3 rounded-md text-white"
           >
             Join the Program
           </Link>
