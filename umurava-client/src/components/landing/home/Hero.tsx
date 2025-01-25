@@ -7,7 +7,7 @@ import hero3 from "../../../../public/hero/hero3.png";
 
 export default function Hero() {
   return (
-    <div className="flex flex-col lg:flex-row items-center gap-[2rem] md:gap-[9rem] mx-8 mt-[10rem]">
+    <div className="flex flex-col lg:flex-row items-center gap-[2rem] md:gap-[5rem] lg:gap-[9rem] mx-8 mt-[6rem] md:mt-[10rem]">
       <div className="flex flex-col gap-3 md:pl-[3rem]">
         <h1 className="text-blue-light text-3xl md:text-[40px] font-bold md:font-extrabold">
           Build Work Experience <br /> through Skills Challenges <br /> Program
