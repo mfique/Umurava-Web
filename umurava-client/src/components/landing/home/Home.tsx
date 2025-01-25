@@ -3,7 +3,7 @@ import Hero from "./Hero";
 
 export default function HomeLand() {
   return (
-    <div className="md:mx-14">
+    <div className="md:mx-16">
       <Navbar />
       <Hero />
     </div>
