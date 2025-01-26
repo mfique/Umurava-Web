@@ -1,6 +1,7 @@
 import Navbar from "../shared/Navbar";
 import Hero from "./Hero";
 import Section2 from "./Section2";
+import Section3 from "./Section3";
 
 export default function HomeLand() {
   return (
@@ -8,6 +9,7 @@ export default function HomeLand() {
       <Navbar />
       <Hero />
       <Section2 />
+      <Section3 />
     </div>
   );
 }

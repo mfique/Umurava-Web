@@ -16,7 +16,7 @@ export default function Section2() {
       </div>
 
       <div className="grid gap-3 my-10 md:my-20 lg:grid-cols-2 md:grid-rows-2">
-        <div className="bg-blue-light text-white rounded-lg p-6 col-span-2">
+        <div className="bg-blue-light text-white rounded-lg p-6 md:col-span-2">
           <div className="bg-white rounded-md h-10 w-10 p-3">
             <Image src={Case} alt="Case icon" />
           </div>
