@@ -133,7 +133,7 @@ export default function Section4() {
             {slides.map((_, index) => (
               <span
                 key={index}
-                className={`w-3 h-3 rounded-full transition-all duration-300 ${
+                className={`w-2 h-2 rounded-full transition-all duration-300 ${
                   currentSlide === index ? "bg-blue-600" : "bg-gray-400"
                 }`}
                 onClick={() => setCurrentSlide(index)}

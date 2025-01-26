@@ -8,6 +8,10 @@ body {
   font-family: "Work Sans", sans-serif;
 }
 
-#section2 {
-  background-color: hex(#f9fafb);
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
