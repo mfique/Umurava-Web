@@ -7,3 +7,7 @@
 body {
   font-family: "Work Sans", sans-serif;
 }
+
+#section2 {
+  background-color: hex(#f9fafb);
+}
