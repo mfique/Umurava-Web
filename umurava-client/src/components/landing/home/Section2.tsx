@@ -3,7 +3,7 @@ import Case from "../../../../public/icons/case.svg";
 
 export default function Section2() {
   return (
-    <div id="section2" className="mt-16 lg:mt-24 mx-10 md:mx-15 lg:mx-20">
+    <div className="bg-[#F9FAFB] pt-16 lg:pt-24 px-10 pd:px-15 lg:px-20">
       <div className="flex items-center justify-center text-center flex-col gap-4 md:mx-10 lg:mx-28">
         <h1 className="text-3xl md:text-[40px] font-bold md:font-extrabold">
           Experience a New Way of Building Work Experience

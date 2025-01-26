@@ -136,7 +136,7 @@ export default function Section5() {
       <div className="flex justify-center my-6">
         <button
           onClick={() => setShowAll(!showAll)}
-          className="text-[15px] border-[1.5px] text-blue-light border-blue-light hover:bg-blue-light hover:text-white px-6 py-2 lg:px-10 font-semibold rounded-md duration-500"
+          className="text-[15px] border-[1px] text-blue-light border-blue-light hover:bg-blue-light hover:text-white px-6 py-2 lg:px-10 font-semibold rounded-md duration-500"
         >
           {showAll ? "View Less" : "View All"}
         </button>
