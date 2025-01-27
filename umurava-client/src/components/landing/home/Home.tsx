@@ -1,3 +1,4 @@
+import Footer from "../shared/Footer";
 import Navbar from "../shared/Navbar";
 import Hero from "./Hero";
 import Section2 from "./Section2";
@@ -20,6 +21,7 @@ export default function HomeLand() {
       <Section6 />
       <Section7 />
       <Section9 />
+      <Footer />
     </div>
   );
 }
