@@ -83,13 +83,13 @@ export default function Footer() {
             <h2 className="text-xl font-bold mb-4">
               Join our newsletter to keep up to date with us!
             </h2>
-            <div className="relative bg-white px-2 py-1 rounded-lg">
+            <div className="flex bg-white px-2 py-1 rounded-lg justify-between ">
               <input
                 type="email"
                 placeholder="Email"
-                className="bg-white text-black py-2 px-4 pr-20 rounded-lg focus:outline-none"
+                className="bg-white text-black py-2 px-4  rounded-lg focus:outline-none"
               />
-              <button className="absolute right-[1x] top-0 bottom-0 bg-blue-600 hover:bg-blue-700 text-white px-4 rounded-r-lg focus:outline-none">
+              <button className=" bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg focus:outline-none">
                 Subscribe
               </button>
             </div>
