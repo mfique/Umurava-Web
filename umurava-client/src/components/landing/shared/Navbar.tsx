@@ -30,9 +30,9 @@ export default function Navbar() {
   return (
     <div>
       <div className="lg:px-16 flex fixed w-screen left-0 top-0 bg-white/50 backdrop-blur-lg justify-between items-center pr-6">
-        <div>
+        <Link href={"/"}>
           <Image src={logo2} alt="Umurava logo" height={90} />
-        </div>
+        </Link>
 
         {/* menu button */}
         <div className="lg:hidden">
