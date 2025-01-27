@@ -4,18 +4,20 @@ import Image from "next/image";
 import logo2 from "../../../../public/logo_2.png";
 import Link from "next/link";
 import { Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 
 const navLinks = [
   { name: "Home", linkTo: "/" },
   { name: "Challenge & Hackathons", linkTo: "/challenges" },
-  { name: "For Learning Institutions", linkTo: "/instituons" },
+  { name: "For Learning Institutions", linkTo: "/institutions" },
   { name: "About Us", linkTo: "/about" },
   { name: "Contact Us", linkTo: "/contact" },
 ];
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const pathname = usePathname();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -45,7 +47,9 @@ export default function Navbar() {
             <Link
               key={i}
               href={link.linkTo}
-              className="hover:text-blue-light duration-300"
+              className={`hover:text-blue-light duration-300 ${
+                pathname === link.linkTo ? "text-blue-500" : ""
+              }`}
             >
               {link.name}
             </Link>
@@ -84,7 +88,9 @@ export default function Navbar() {
               key={i}
               href={link.linkTo}
               onClick={closeMenu}
-              className="hover:text-blue-light duration-300"
+              className={`hover:text-blue-light duration-300 ${
+                pathname === link.linkTo ? "text-blue-500" : ""
+              }`}
             >
               {link.name}
             </Link>
