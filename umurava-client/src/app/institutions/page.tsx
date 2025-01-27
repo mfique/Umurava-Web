@@ -5,6 +5,8 @@ import Image from "next/image";
 import Banner from "../../../public/Frame.png";
 import Case from "../../../public/icons/case.svg";
 import SKill from "../../../public/skill.png";
+import Ellipse1 from "../../../public/icons/ellipse1.svg";
+import Ellipse2 from "../../../public/icons/ellipse2.svg";
 
 // the icons
 import ared from "../../../public/partners/ared.png";
@@ -277,6 +279,26 @@ export default function Page() {
               fill
               className="object-contain p-4"
             />
+          </div>
+        </div>
+
+        <div className="relative mx-10 md:mx-20 p-4 md:p-6 lg:p-10 bg-blue-light rounded-xl mt-5 mb-10 -z-10">
+          <div className="text-center">
+            <h2 className="text-xl md:text-2xl font-bold text-white max-w-xl mx-auto leading-tight py-6">
+              Ready to transform your learning instition?
+            </h2>
+            <Link
+              href={"/hello"}
+              className="cursor-pointer px-3 py-2 my-3 md:p-3 mt-3 w-[150px] text-blue-light hover:text-white bg-white hover:bg-blue-light duration-500 rounded-md font-semibold text-center"
+            >
+              Let&apos;s Partner
+            </Link>
+          </div>
+          <div className="absolute top-0 right-0">
+            <Image src={Ellipse1} height={90} alt="ellipse icon" />
+          </div>
+          <div className="absolute bottom-0 left-0 ">
+            <Image src={Ellipse2} height={70} alt="ellipse icon" />
           </div>
         </div>
       </div>
