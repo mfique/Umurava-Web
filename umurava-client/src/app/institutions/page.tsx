@@ -4,6 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import Banner from "../../../public/Frame.png";
 import Case from "../../../public/icons/case.svg";
+import SKill from "../../../public/skill.png";
 
 // the icons
 import ared from "../../../public/partners/ared.png";
@@ -17,6 +18,34 @@ import laterile from "../../../public/partners/laterile.png";
 import soko from "../../../public/partners/soko.png";
 import tori from "../../../public/partners/tori.png";
 import viamo from "../../../public/partners/viamo.png";
+
+interface IntegrationPoint {
+  id: number;
+  text: string;
+}
+
+const integrationPoints: IntegrationPoint[] = [
+  {
+    id: 1,
+    text: "As Career Development and Job Readiness Program",
+  },
+  {
+    id: 2,
+    text: "As Skills Assessments Method after a course or a term",
+  },
+  {
+    id: 3,
+    text: "As extracurricular activities to complement academic courses",
+  },
+  {
+    id: 4,
+    text: "As the portfolio of the Students",
+  },
+  {
+    id: 5,
+    text: "As part of Capstone Projects or final-year assignments",
+  },
+];
 
 export default function Page() {
   return (
@@ -141,7 +170,7 @@ export default function Page() {
       </div>
 
       {/* The partners section */}
-      <div className=" my-20 px-10 md:px-20 lg:px-26">
+      <div className=" my-20 px-10 md:px-20 lg:px-26 relative z-[-1]">
         <h1 className="text-3xl md:text-[40px] font-bold md:font-extrabold text-center my-10">
           Join a few Educational Institutions using <br /> Skills Challenges by
           Umurava
@@ -188,7 +217,7 @@ export default function Page() {
                 key={index}
                 src={icon}
                 alt="partner logo"
-                className="h-20 w-auto"
+                className="h-10 w-auto"
               />
             ))}
           </div>
@@ -219,6 +248,38 @@ export default function Page() {
           animation: marquee-reverse 20s linear infinite;
         }
       `}</style>
+
+      {/* the other div */}
+      <div className="max-w-7xl mx-auto p-8 md:p-12 my-20 px-10 md:px-20 lg:px-26">
+        <div className="text-center mb-12">
+          <h2 className="text-2xl md:text-3xl font-bold text-[#1a2b4b] max-w-2xl mx-auto leading-tight">
+            How Skills Challenges Program can Be Integrated into your Learning
+            Institution
+          </h2>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8 items-center">
+          <div className="space-y-6">
+            {integrationPoints.map((point) => (
+              <div key={point.id} className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-8 h-8 rounded-full bg-blue-light text-white flex items-center justify-center font-semibold">
+                  {point.id}
+                </div>
+                <p className="text-gray-700 mt-1">{point.text}</p>
+              </div>
+            ))}
+          </div>
+
+          <div className="relative h-[400px] bg-blue-50 rounded-3xl overflow-hidden -z-10">
+            <Image
+              src={SKill}
+              alt="Skills platform interface"
+              fill
+              className="object-contain p-4"
+            />
+          </div>
+        </div>
+      </div>
     </MainLayout>
   );
 }
