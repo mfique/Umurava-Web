@@ -12,7 +12,7 @@ const navLinks = [
   { name: "Challenge & Hackathons", linkTo: "/challenges" },
   { name: "For Learning Institutions", linkTo: "/institutions" },
   { name: "About Us", linkTo: "/about" },
-  { name: "Contact Us", linkTo: "/contact" },
+  { name: "Contact Us", linkTo: "/contact" }
 ];
 
 export default function Navbar() {
