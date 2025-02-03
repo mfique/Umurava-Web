@@ -7,6 +7,7 @@ interface Challenge {
     description: string;
     moneyPrize: number;
     deadline: string;
+    status: string;
 }
 
 interface ChallengesState {
