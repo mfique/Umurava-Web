@@ -1,53 +1,31 @@
+"use client";
 
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import Link from 'next/link';
-import Dashboard from '../../pages/dashboard';
-import Challenges from '../../pages/challenges';
-import Community from '../../pages/community';
+import { usePathname, useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
+
+const Dashboard = dynamic(() => import("@/app/dashboard/dashboard/page"));
+const Challenges = dynamic(() => import("@/app/dashboard/challenges/page"));
+const Community = dynamic(() => import("@/app/dashboard/community/page"));
 
 const DashboardLayout = () => {
+    const pathname = usePathname();
     const router = useRouter();
-    const [activePage, setActivePage] = useState('dashboard');
 
-    const handlePageChange = (page) => {
-        setActivePage(page);
+    const handlePageChange = (page: string) => {
         router.push(`/${page}`);
     };
 
     return (
         <div className="container mx-auto p-4">
             <nav className="flex space-x-4 mb-4">
-                <Link href="/dashboard">
-                    <button
-                        className={`bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2 ${activePage === 'dashboard' ? 'bg-blue-600' : ''}`}
-                        onClick={() => handlePageChange('dashboard')}
-                    >
-                        Dashboard
-                    </button>
-                </Link>
-                <Link href="/challenges">
-                    <button
-                        className={`bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2 ${activePage === 'challenges' ? 'bg-blue-600' : ''}`}
-                        onClick={() => handlePageChange('challenges')}
-                    >
-                        Challenges
-                    </button>
-                </Link>
-                <Link href="/community">
-                    <button
-                        className={`bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2 ${activePage === 'community' ? 'bg-blue-600' : ''}`}
-                        onClick={() => handlePageChange('community')}
-                    >
-                        Community
-                    </button>
-                </Link>
+                <button onClick={() => handlePageChange("dashboard")} className={`bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2 ${pathname === '/dashboard' ? 'bg-blue-600' : ''}`}>Dashboard</button>
+                <button onClick={() => handlePageChange("challenges")} className={`bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2 ${pathname === '/challenges' ? 'bg-blue-600' : ''}`}>Challenges</button>
+                <button onClick={() => handlePageChange("community")} className={`bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2 ${pathname === '/community' ? 'bg-blue-600' : ''}`}>Community</button>
             </nav>
-
             <div>
-                {activePage === 'dashboard' && <Dashboard />}
-                {activePage === 'challenges' && <Challenges />}
-                {activePage === 'community' && <Community />}
+                {pathname === "/dashboard" && <Dashboard />}
+                {pathname === "/challenges" && <Challenges />}
+                {pathname === "/community" && <Community />}
             </div>
         </div>
     );

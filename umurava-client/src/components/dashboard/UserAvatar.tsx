@@ -1,14 +1,28 @@
-import React from 'react';
+"use client";
 
-const UserAvatar = ({ user }) => {
-    const userImage = "https://example.com/user.jpg";
+import Image from "next/image";
 
+interface User {
+    id: string;
+    name: string;
+    avatar: string;
+}
+
+interface UserAvatarProps {
+    user: User; // Explicitly define the type of `user`
+}
+
+export const UserAvatar = ({ user }: UserAvatarProps) => {
     return (
-        <div className="flex items-center">
-            <img src={userImage} alt={user.name}
-                 className="w-10 h-10 rounded-full mr-2" />
+        <div className="flex items-center space-x-3">
+            <Image
+                src={user.avatar}
+                alt={user.name}
+                width={40}
+                height={40}
+                className="rounded-full"
+            />
+            <span className="font-medium">{user.name}</span>
         </div>
     );
 };
-
-export default UserAvatar;

@@ -1,8 +1,16 @@
-import { configureStore } from '@reduxjs/toolkit';
-import rootReducer from './rootReducer';
+import { configureStore } from "@reduxjs/toolkit";
+import userReducer from "./userSlice";
+import challengeReducer from "./challengesSlice";
+import communityReducer from "./communitySlice";
 
-const store = configureStore({
-    reducer: rootReducer,
+export const store = configureStore({
+    reducer: {
+        user: userReducer,
+        challenges: challengeReducer,
+        community: communityReducer,
+    },
 });
 
-export default store;
+// Define RootState and AppDispatch types for useSelector & useDispatch
+export type RootState = ReturnType<typeof store.getState>;
+export type AppDispatch = typeof store.dispatch;
