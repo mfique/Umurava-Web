@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchChallenges } from "@/store/challengesSlice";
 import { RootState, AppDispatch } from "@/store/store";
 import Link from "next/link";
+import { CreateChallengeForm } from "@/components/dashboard/CreateChallengeForm"; // Import CreateChallengeForm
 
 const ChallengesPage = () => {
     const dispatch = useDispatch<AppDispatch>();
@@ -19,7 +20,11 @@ const ChallengesPage = () => {
     return (
         <div className="container mx-auto p-6">
             <h1 className="text-2xl font-bold mb-4">All Challenges</h1>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+
+            {/* Render CreateChallengeForm */}
+            <CreateChallengeForm />  {/* Add the CreateChallengeForm here */}
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
                 {challenges.length > 0 ? (
                     challenges.map((challenge) => (
                         <div key={challenge.id} className="border p-4 rounded-md shadow-md">
