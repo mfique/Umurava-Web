@@ -1,151 +1,134 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store/store";
+//import { createChallenge, updateChallenge } from "@/store/challengesSlice";
 
-interface ChallengeData {
-    id?: string;
+// Define allowed status values
+type ChallengeStatus = "open" | "ongoing" | "completed";
+
+interface Challenge {
+    id: string;
     title: string;
     description: string;
+    status: ChallengeStatus;
     moneyPrize: number;
     deadline: string;
-    status: "open" | "ongoing" | "completed";
+    duration: number;
 }
 
 interface CreateChallengeFormProps {
-    initialData?: ChallengeData;
-    onSubmit: (data: ChallengeData) => void;
+    initialData?: Challenge; // The form will use initialData if provided
+    onSubmit: (challengeData: Challenge) => void; // Function to handle form submission
 }
 
-const CreateChallengeForm: React.FC<CreateChallengeFormProps> = ({
-                                                                     initialData = { title: "", description: "", moneyPrize: 0, deadline: "", status: "open" },
-                                                                     onSubmit
-                                                                 }) => {
-    const [challengeData, setChallengeData] = useState<ChallengeData>(initialData);
-    const [errors, setErrors] = useState<{ [key: string]: string }>({});
+export const CreateChallengeForm = ({ initialData, onSubmit }: CreateChallengeFormProps) => {
+    const dispatch = useDispatch<AppDispatch>();
+
+    // Set the form state, using initialData if provided, or default values
+    const [formData, setFormData] = useState<Challenge>({
+        id: initialData?.id || "",
+        title: initialData?.title || "",
+        moneyPrize: initialData?.moneyPrize || 0,
+        description: initialData?.description || "",
+        deadline: initialData?.deadline || "",
+        status: initialData?.status || "open",
+        duration: initialData?.duration || 0,
+    });
+
+    useEffect(() => {
+        if (initialData) {
+            setFormData(initialData);
+        }
+    }, [initialData]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
         const { name, value } = e.target;
 
-        setChallengeData({
-            ...challengeData,
-            [name]: name === "moneyPrize" ? Number(value) : value,
-        });
-    };
-
-    const validateForm = () => {
-        const newErrors: { [key: string]: string } = {};
-
-        if (!challengeData.title.trim()) newErrors.title = "Title is required";
-        if (!challengeData.description.trim()) newErrors.description = "Description is required";
-        if (challengeData.moneyPrize <= 0) newErrors.moneyPrize = "Prize amount must be greater than zero";
-        if (!challengeData.deadline) newErrors.deadline = "Deadline is required";
-        if (!challengeData.status) newErrors.status = "Status is required";
-
-        setErrors(newErrors);
-        return Object.keys(newErrors).length === 0;
+        setFormData((prevData) => ({
+            ...prevData,
+            [name]: name === "moneyPrize" || name === "duration" ? Number(value) || 0 : value, // Convert to number
+        }));
     };
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        if (!validateForm()) return;
-        onSubmit(challengeData);
+        onSubmit(formData); // Calls the function passed from the parent component
     };
 
     return (
         <form onSubmit={handleSubmit} className="space-y-4 bg-white p-6 rounded-lg shadow-md">
             <div>
-                <label htmlFor="title" className="block text-sm font-medium text-gray-700">
-                    Challenge Title:
-                </label>
+                <label className="block text-sm font-medium text-gray-700">Title</label>
                 <input
                     type="text"
-                    id="title"
                     name="title"
-                    value={challengeData.title}
+                    value={formData.title}
                     onChange={handleChange}
+                    className="mt-1 block w-full border-gray-300 rounded-md"
                     required
-                    className="mt-1 p-2 border border-gray-300 rounded-md w-full"
                 />
-                {errors.title && <p className="text-red-500 text-sm">{errors.title}</p>}
             </div>
-
             <div>
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700">
-                    Description:
-                </label>
-                <textarea
-                    id="description"
-                    name="description"
-                    value={challengeData.description}
-                    onChange={handleChange}
-                    required
-                    className="mt-1 p-2 border border-gray-300 rounded-md w-full"
-                />
-                {errors.description && <p className="text-red-500 text-sm">{errors.description}</p>}
-            </div>
-
-            <div>
-                <label htmlFor="moneyPrize" className="block text-sm font-medium text-gray-700">
-                    Money Prize:
-                </label>
+                <label className="block text-sm font-medium text-gray-700">Money Prize</label>
                 <input
                     type="number"
-                    id="moneyPrize"
                     name="moneyPrize"
-                    value={challengeData.moneyPrize}
+                    value={formData.moneyPrize}
                     onChange={handleChange}
+                    className="mt-1 block w-full border-gray-300 rounded-md"
                     required
-                    className="mt-1 p-2 border border-gray-300 rounded-md w-full"
                 />
-                {errors.moneyPrize && <p className="text-red-500 text-sm">{errors.moneyPrize}</p>}
             </div>
-
             <div>
-                <label htmlFor="deadline" className="block text-sm font-medium text-gray-700">
-                    Deadline:
-                </label>
+                <label className="block text-sm font-medium text-gray-700">Duration (days)</label>
+                <input
+                    type="number"
+                    name="duration"
+                    value={formData.duration}
+                    onChange={handleChange}
+                    className="mt-1 block w-full border-gray-300 rounded-md"
+                    required
+                />
+            </div>
+            <div>
+                <label className="block text-sm font-medium text-gray-700">Description</label>
+                <textarea
+                    name="description"
+                    value={formData.description}
+                    onChange={handleChange}
+                    className="mt-1 block w-full border-gray-300 rounded-md"
+                    required
+                />
+            </div>
+            <div>
+                <label className="block text-sm font-medium text-gray-700">Deadline</label>
                 <input
                     type="date"
-                    id="deadline"
                     name="deadline"
-                    value={challengeData.deadline}
+                    value={formData.deadline}
                     onChange={handleChange}
+                    className="mt-1 block w-full border-gray-300 rounded-md"
                     required
-                    className="mt-1 p-2 border border-gray-300 rounded-md w-full"
                 />
-                {errors.deadline && <p className="text-red-500 text-sm">{errors.deadline}</p>}
             </div>
-
-            {/* Status Dropdown */}
             <div>
-                <label htmlFor="status" className="block text-sm font-medium text-gray-700">
-                    Status:
-                </label>
+                <label className="block text-sm font-medium text-gray-700">Status</label>
                 <select
-                    id="status"
                     name="status"
-                    value={challengeData.status}
+                    value={formData.status}
                     onChange={handleChange}
-                    required
-                    className="mt-1 p-2 border border-gray-300 rounded-md w-full"
+                    className="mt-1 block w-full border-gray-300 rounded-md"
                 >
                     <option value="open">Open</option>
                     <option value="ongoing">Ongoing</option>
                     <option value="completed">Completed</option>
                 </select>
-                {errors.status && <p className="text-red-500 text-sm">{errors.status}</p>}
             </div>
-
-            <div>
-                <button
-                    type="submit"
-                    className="bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2"
-                >
-                    {initialData.id ? "Update Challenge" : "Create Challenge"}
-                </button>
-            </div>
+            <button type="submit" className="bg-blue-500 hover:bg-blue-600 text-white rounded-md px-4 py-2">
+                {initialData ? "Update Challenge" : "Create Challenge"}
+            </button>
         </form>
     );
 };
-
-export default CreateChallengeForm;

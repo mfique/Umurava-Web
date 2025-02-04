@@ -1,29 +1,37 @@
-import React from 'react';
+"use client";
+
+import React, { useState } from "react";
+
+type ChallengeFilters = {
+    status?: "open" | "completed" | "ongoing" | "";
+};
 
 interface ChallengeFiltersProps {
-    filters: {
-        status: string;
-    };
-    onFilterChange: (newFilters: { status: string }) => void;
+    filters: ChallengeFilters;
+    onFilterChange: (newFilters: ChallengeFilters) => void;
 }
 
-const ChallengeFilters = ({ filters, onFilterChange }: ChallengeFiltersProps) => {
-    const handleFilterChange = (filterType: string, filterValue: string) => {
-        onFilterChange({ ...filters, [filterType]: filterValue });
+const ChallengeFilters: React.FC<ChallengeFiltersProps> = ({ filters, onFilterChange }) => {
+    const [selectedStatus, setSelectedStatus] = useState<ChallengeFilters>(filters);
+
+    const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        const newStatus = event.target.value as ChallengeFilters["status"];
+        setSelectedStatus({ status: newStatus });
+        onFilterChange({ status: newStatus });
     };
 
     return (
-        <div className="flex space-x-4 mb-4">
-            {/* Status Filter */}
+        <div className="mb-4">
+            <label className="text-sm font-medium text-gray-700">Filter by Status:</label>
             <select
-                value={filters.status}
-                onChange={(e) => handleFilterChange('status', e.target.value)}
-                className="border border-gray-300 rounded-md px-4 py-2"
+                value={selectedStatus.status ?? ""}
+                onChange={handleChange}
+                className="ml-2 border border-gray-300 p-2 rounded-md"
             >
                 <option value="">All</option>
                 <option value="open">Open</option>
                 <option value="completed">Completed</option>
-                <option value="ongoing">Ongoing</option> {/* Added Ongoing filter */}
+                <option value="ongoing">Ongoing</option>
             </select>
         </div>
     );

@@ -1,107 +1,117 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
+import { RootState } from "./store"; // Ensure correct import for RootState
 
-// Define the Challenge type
+// Define Challenge type
 interface Challenge {
     id: string;
     title: string;
     description: string;
+    status: "open" | "completed" | "ongoing";
     moneyPrize: number;
     deadline: string;
-    status: string;
+    duration: number;
 }
 
-interface ChallengesState {
+// Define Filters type
+interface ChallengeFilters {
+    status?: "open" | "completed" | "ongoing" | ""; // Optional filter for challenge status
+}
+
+// Define Redux state structure
+interface ChallengeState {
     challenges: Challenge[];
+    selectedChallenge: Challenge | null; // New state for selected challenge
+    filters: ChallengeFilters;
     loading: boolean;
     error: string | null;
-    challenge: Challenge | null;  // To store a single challenge's details
 }
 
-const initialState: ChallengesState = {
+// Initial state
+const initialState: ChallengeState = {
     challenges: [],
+    selectedChallenge: null, // Initial state for selected challenge
+    filters: { status: "" }, // Default filter (show all challenges)
     loading: false,
     error: null,
-    challenge: null,  // Initialize challenge as null
 };
 
-// Async thunk for fetching challenges
-const fetchChallenges = createAsyncThunk<Challenge[]>(
+// Async Thunk: Fetch challenges from API with filters
+export const fetchChallenges = createAsyncThunk<Challenge[], ChallengeFilters, { state: RootState }>(
     "challenges/fetchChallenges",
-    async () => {
-        const response = await fetch("/api/challenges");
+    async (filters) => {
+        const queryParams = new URLSearchParams();
+        if (filters.status) queryParams.append("status", filters.status);
+
+        const response = await fetch(`/api/challenges?${queryParams.toString()}`);
+        if (!response.ok) throw new Error("Failed to fetch challenges");
+
         return response.json();
     }
 );
 
-// Async thunk for fetching a single challenge's details
-const fetchChallengeDetails = createAsyncThunk<Challenge, string>(
+// Async Thunk: Fetch details of a specific challenge
+export const fetchChallengeDetails = createAsyncThunk<Challenge, string>(
     "challenges/fetchChallengeDetails",
-    async (id: string) => {
+    async (id) => {
         const response = await fetch(`/api/challenges/${id}`);
+        if (!response.ok) throw new Error("Failed to fetch challenge details");
+
         return response.json();
     }
 );
 
-// Async thunk for creating a challenge
-const createChallenge = createAsyncThunk<Challenge, Challenge>(
-    "challenges/createChallenge",
-    async (newChallenge: Challenge) => {
-        const response = await fetch("/api/challenges", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(newChallenge),
-        });
-        return response.json();
-    }
-);
-
-// Slice to manage challenges state
+// Create Slice
 const challengesSlice = createSlice({
     name: "challenges",
     initialState,
-    reducers: {},
+    reducers: {
+        // Set challenge filters (status)
+        setChallengeFilters: (state, action: PayloadAction<ChallengeFilters>) => {
+            state.filters = action.payload;
+        },
+
+        // Create a new challenge
+        createChallenge: (state, action: PayloadAction<Challenge>) => {
+            state.challenges.push(action.payload);
+        },
+
+        // Update an existing challenge (for example, after editing)
+        updateChallenge: (state, action: PayloadAction<Challenge>) => {
+            const index = state.challenges.findIndex(challenge => challenge.id === action.payload.id);
+            if (index !== -1) {
+                state.challenges[index] = action.payload;
+            }
+        },
+    },
     extraReducers: (builder) => {
-        builder.addCase(fetchChallenges.pending, (state) => {
-            state.loading = true;
-        });
-        builder.addCase(fetchChallenges.fulfilled, (state, action) => {
-            state.challenges = action.payload;
-            state.loading = false;
-        });
-        builder.addCase(fetchChallenges.rejected, (state, action) => {
-            state.error = action.error.message ?? "Error fetching challenges";
-            state.loading = false;
-        });
-
-        // Handle single challenge detail fetch
-        builder.addCase(fetchChallengeDetails.pending, (state) => {
-            state.loading = true;
-        });
-        builder.addCase(fetchChallengeDetails.fulfilled, (state, action) => {
-            state.challenge = action.payload;
-            state.loading = false;
-        });
-        builder.addCase(fetchChallengeDetails.rejected, (state, action) => {
-            state.error = action.error.message ?? "Error fetching challenge details";
-            state.loading = false;
-        });
-
-        // Handle creating a new challenge
-        builder.addCase(createChallenge.pending, (state) => {
-            state.loading = true;
-        });
-        builder.addCase(createChallenge.fulfilled, (state, action) => {
-            state.challenges.push(action.payload); // Add the new challenge to the challenges list
-            state.loading = false;
-        });
-        builder.addCase(createChallenge.rejected, (state, action) => {
-            state.error = action.error.message ?? "Error creating challenge";
-            state.loading = false;
-        });
+        builder
+            .addCase(fetchChallenges.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchChallenges.fulfilled, (state, action) => {
+                state.loading = false;
+                state.challenges = action.payload;
+            })
+            .addCase(fetchChallenges.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message || "Failed to fetch challenges";
+            })
+            .addCase(fetchChallengeDetails.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })
+            .addCase(fetchChallengeDetails.fulfilled, (state, action) => {
+                state.loading = false;
+                state.selectedChallenge = action.payload; // Store selected challenge
+            })
+            .addCase(fetchChallengeDetails.rejected, (state, action) => {
+                state.loading = false;
+                state.error = action.error.message || "Failed to fetch challenge details";
+            });
     },
 });
 
+//  Export actions & reducer
+export const { setChallengeFilters, createChallenge, updateChallenge } = challengesSlice.actions;
 export default challengesSlice.reducer;
-export { fetchChallenges, fetchChallengeDetails, createChallenge }; // Export the createChallenge action
